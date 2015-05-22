@@ -39,7 +39,7 @@ class TransitionManager: NSObject,UIViewControllerAnimatedTransitioning, UIViewC
         }
     }
     
-    var inTime = 0.4
+    var inTime = 0.5
     var outTime = 0.3
     
     func offStageMenuController(menuViewController:NiceActionSheet){
