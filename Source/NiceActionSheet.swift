@@ -153,6 +153,7 @@ public class NiceActionSheet: UIViewController {
         let button = UIButton()
         renderedButtons.append(button)
         button.setTitle(buttonInfo.title, forState: .Normal)
+        button.titleLabel?.font = buttonsFont
         button.setTitleColor(buttonInfo.titleColor, forState: .Normal)
         button.setTranslatesAutoresizingMaskIntoConstraints(false)
         if let buttonSelectedIndex = buttonSelectedIndex where buttonSelectedIndex == index{
