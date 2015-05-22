@@ -10,6 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBAction func showActionSheet(sender: AnyObject) {
+        NiceActionSheet.show(self, title: "Lato", titleFont: UIFont.systemFontOfSize(15), titleColor: UIColor.redColor())
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
