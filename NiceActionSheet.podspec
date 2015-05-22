@@ -32,6 +32,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/bitomule/NiceActionSheet.git", :tag => "0.1.0" }
 
   s.source_files = 'Source/*.swift'
+  s.dependency 'EasyConstraints', '~> 0.1.0'
   s.requires_arc = true
 
 end
