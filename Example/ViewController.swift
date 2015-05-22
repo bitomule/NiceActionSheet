@@ -10,8 +10,20 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var selectedIndex = 0
+    
+    @IBOutlet weak var indexLabel: UILabel!
+    
     @IBAction func showActionSheet(sender: AnyObject) {
-        NiceActionSheet.show(self, title: "Lato", titleFont: UIFont.systemFontOfSize(15), titleColor: UIColor.redColor())
+        let button1 = NiceActionSheetButton(title: "Button 1")
+        let button2 = NiceActionSheetButton(title: "Button 2", titleColor: UIColor.whiteColor())
+        let button3 = NiceActionSheetButton(title: "Button3")
+        let button4 = NiceActionSheetButton(title: "Button 4")
+        
+        NiceActionSheet.show(self, backgroundColor: UIColor.whiteColor(), backgroundAlpha: 0.6, sheetBackgroundColor: UIColor.grayColor(), title: "Title here", titleFont: UIFont.boldSystemFontOfSize(15), titleColor: UIColor.whiteColor(), buttons: [button1,button2,button3,button4], buttonSelectedColor: UIColor.blueColor(), buttonsFont: UIFont.boldSystemFontOfSize(15), buttonSelectedIndex: self.selectedIndex) { (index) -> Void in
+            self.selectedIndex = index
+            self.indexLabel.text = String(index)
+        }
     }
     
     override func viewDidLoad() {

@@ -39,6 +39,9 @@ class TransitionManager: NSObject,UIViewControllerAnimatedTransitioning, UIViewC
         }
     }
     
+    var inTime = 0.4
+    var outTime = 0.3
+    
     func offStageMenuController(menuViewController:NiceActionSheet){
         menuViewController.viewContainer.layer.removeAllAnimations()
         
@@ -48,12 +51,12 @@ class TransitionManager: NSObject,UIViewControllerAnimatedTransitioning, UIViewC
         })
         
         let animation = CABasicAnimation(keyPath: "position.y")
-        animation.duration = self.transitionDuration(transitionContext)
+        animation.duration = outTime
         animation.fromValue = UIScreen.mainScreen().bounds.height - menuViewController.viewContainer.bounds.height * 0.5
         animation.toValue = UIScreen.mainScreen().bounds.height + menuViewController.viewContainer.bounds.height * 0.5
         animation.fillMode = kCAFillModeForwards
         animation.removedOnCompletion = false
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        animation.timingFunction = CAMediaTimingFunction(controlPoints: 0.55, 0.055, 0.675, 0.19)
         animation.delegate = self
         menuViewController.viewContainer.layer.addAnimation(animation, forKey: "hide")
     }
@@ -65,19 +68,21 @@ class TransitionManager: NSObject,UIViewControllerAnimatedTransitioning, UIViewC
         })
         
         let animation = CABasicAnimation(keyPath: "position.y")
-        animation.duration = self.transitionDuration(transitionContext)
+        animation.duration = inTime
         animation.fromValue = UIScreen.mainScreen().bounds.height + menuViewController.viewContainer.bounds.height * 0.5
         animation.toValue = UIScreen.mainScreen().bounds.height - menuViewController.viewContainer.bounds.height * 0.5
         animation.fillMode = kCAFillModeForwards
         animation.removedOnCompletion = false
-        animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        //animation.timingFunction = [CAMediaTimingFunction functionWithControlPoints:0.5:0:0.9:0.7];
+        animation.timingFunction = CAMediaTimingFunction(controlPoints: 0.19, 1, 0.22, 1)
+        //animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         animation.delegate = self
         menuViewController.viewContainer.layer.addAnimation(animation, forKey: "show")
     }
     
     // return how many seconds the transiton animation will take
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning) -> NSTimeInterval {
-        return 0.2
+        return 0.4
     }
     
     // MARK: UIViewControllerTransitioningDelegate protocol methods

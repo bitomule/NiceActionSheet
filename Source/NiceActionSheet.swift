@@ -9,9 +9,24 @@
 import UIKit
 import EasyConstraints
 
+public struct NiceActionSheetButton {
+    public var title:String
+    public var titleColor:UIColor
+    
+    public init(title:String) {
+        self.title = title
+        self.titleColor = UIColor.whiteColor()
+    }
+    
+    public init(title:String,titleColor:UIColor) {
+        self.title = title
+        self.titleColor = titleColor
+    }
+}
+
 public class NiceActionSheet: UIViewController {
     
-    public class func show(presenter:UIViewController,title:String,titleFont:UIFont = UIFont.systemFontOfSize(14),titleColor:UIColor = UIColor.blackColor()){
+    public class func show(presenter:UIViewController,backgroundColor:UIColor,backgroundAlpha:CGFloat = 1,sheetBackgroundColor:UIColor,title:String,titleFont:UIFont = UIFont.systemFontOfSize(14),titleColor:UIColor = UIColor.blackColor(),buttons:[NiceActionSheetButton],buttonSelectedColor:UIColor?=nil,buttonsFont:UIFont=UIFont.systemFontOfSize(14),buttonSelectedIndex:Int?=nil,buttonsHandler: (index:Int) -> Void){
         let vc = NiceActionSheet()
         vc.modalPresentationStyle = UIModalPresentationStyle.Custom
         vc.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
@@ -19,26 +34,39 @@ public class NiceActionSheet: UIViewController {
         vc.actionTitle = title
         vc.titleFont = titleFont
         vc.titleColor = titleColor
+        vc.buttons = buttons
+        vc.buttonSelectedColor = buttonSelectedColor
+        vc.buttonsHandler = buttonsHandler
+        vc.buttonSelectedIndex = buttonSelectedIndex
+        vc.buttonsFont = buttonsFont
+        vc.backgroundViewAlpha = backgroundAlpha
+        vc.backgroundViewColor = backgroundColor
+        vc.actionSheetBackgroundColor = sheetBackgroundColor
         presenter.presentViewController(vc, animated: true, completion: nil)
     }
     
-    var backgroundViewAlpha:CGFloat = 0.1
-    var backgroundViewColor = UIColor.redColor()
-    var actionSheetBackgroundColor = UIColor.grayColor()
-    
-    var horizontalMargin:CGFloat = 10
-    var bottomVerticalMargin:CGFloat = 10
-    var buttonToPreviousBorderMargin:CGFloat = 5
+    var horizontalMargin:CGFloat = 37
+    var bottomVerticalMargin:CGFloat = 20
+    var buttonToPreviousBorderMargin:CGFloat = 0
     var buttonToTitleMargin:CGFloat = 10
     var borderToTopButtonMargin:CGFloat = 0
-    var titleToTopMargin:CGFloat = 10
+    var titleToTopMargin:CGFloat = 19
+    var buttonHeight:CGFloat = 43
     
     var actionTitle:String = ""
+    var buttons:[NiceActionSheetButton]!
+    var buttonSelectedIndex:Int?
+    var buttonsHandler: ((index:Int) -> Void)!
     
     //Styles
     
     var titleFont:UIFont = UIFont.systemFontOfSize(14)
     var titleColor:UIColor = UIColor.blackColor()
+    var buttonSelectedColor:UIColor?
+    var backgroundViewAlpha:CGFloat = 0.1
+    var backgroundViewColor = UIColor.redColor()
+    var actionSheetBackgroundColor = UIColor.grayColor()
+    var buttonsFont:UIFont = UIFont.systemFontOfSize(15)
     
     let manager = TransitionManager()
     var viewContainer: UIView!
@@ -46,7 +74,9 @@ public class NiceActionSheet: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = backgroundViewColor.colorWithAlphaComponent(backgroundViewAlpha)
-        buttonSelectedImageColor = getImageWithColor(buttonSelectedBackgroundColor,size:CGSize(width: 1, height: 1))
+        if let buttonSelectedColor = buttonSelectedColor{
+            buttonSelectedImageColor = getImageWithColor(buttonSelectedColor,size:CGSize(width: 1, height: 1))
+        }
         createViewContainer()
         addGestureRecognizers()
     }
@@ -104,9 +134,10 @@ public class NiceActionSheet: UIViewController {
     
     private func createButtons(container:UIView){
         var lastView:UIView = titleView
-        for(var i=0;i<4;i++){
-            let button = createButton(container,previousView:lastView)
-            if(i==3){
+        assert(buttons.count > 0, "At least one button needed")
+        for(var i=0;i<buttons.count;i++){
+            let button = createButton(buttons[i],container:container,previousView:lastView,index:i)
+            if(i==(buttons.count - 1)){
                 lastView = button
             }else{
                 lastView = createBorder(container, previousButton: button)
@@ -116,28 +147,67 @@ public class NiceActionSheet: UIViewController {
         container.addConstraint(bottomConstraint)
     }
     
-    private func createButton(container:UIView,previousView:UIView)->UIView{
+    private var renderedButtons:[UIButton] = [UIButton]()
+    
+    private func createButton(buttonInfo:NiceActionSheetButton,container:UIView,previousView:UIView,index:Int)->UIView{
         let button = UIButton()
-        button.setTitle("button", forState: UIControlState.Normal)
+        renderedButtons.append(button)
+        button.setTitle(buttonInfo.title, forState: .Normal)
+        button.setTitleColor(buttonInfo.titleColor, forState: .Normal)
         button.setTranslatesAutoresizingMaskIntoConstraints(false)
-        button.setBackgroundImage(buttonSelectedImageColor, forState: UIControlState.Highlighted)
-        button.setBackgroundImage(buttonSelectedImageColor, forState: UIControlState.Selected)
+        if let buttonSelectedIndex = buttonSelectedIndex where buttonSelectedIndex == index{
+            button.selected = true
+        }else{
+            button.selected = false
+        }
+        
+        if let buttonSelectedImageColor = buttonSelectedImageColor{
+            button.setBackgroundImage(buttonSelectedImageColor, forState: UIControlState.Highlighted)
+            button.setBackgroundImage(buttonSelectedImageColor, forState: UIControlState.Selected)
+        }
+        button.tag = index
+        button.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         container.addSubview(button)
-        let topSpace = button*><>(previousView,buttonToPreviousBorderMargin)
-        container.addConstraint(topSpace)
+        let topSpace:NSLayoutConstraint
+        if(index == 0)
+        {
+            //Is first button
+            let topSpace = button*><>(previousView,buttonToTitleMargin)
+            container.addConstraint(topSpace)
+        }else{
+            let topSpace = button*><>(previousView,buttonToPreviousBorderMargin)
+            container.addConstraint(topSpace)
+        }
 
         let leadingConstraint = button<<>(container,horizontalMargin)
         let trailingConstraint = container<>>(button,horizontalMargin)
-        let heightConstraint = NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 50)
+        let heightConstraint = NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: buttonHeight)
         button.addConstraint(heightConstraint)
         container.addConstraints([trailingConstraint,leadingConstraint])
         return button
     }
     
+    private func resetButtons(){
+        for button in renderedButtons{
+            button.selected = false
+        }
+    }
+    
+    func buttonPressed(button:UIButton){
+        resetButtons()
+        button.selected = true
+        self.dismissViewControllerAnimated(true, completion: nil)
+        buttonsHandler(index:button.tag)
+    }
+    
     private func createBorder(container:UIView,previousButton:UIView)->UIView{
         let border = UIView()
         border.setTranslatesAutoresizingMaskIntoConstraints(false)
-        border.backgroundColor = UIColor.blackColor()
+        if let buttonSelectedColor = buttonSelectedColor{
+            border.backgroundColor = buttonSelectedColor
+        }else{
+            border.backgroundColor = UIColor.clearColor()
+        }
         container.addSubview(border)
         let topSpace = border*><>(previousButton,borderToTopButtonMargin)
         let leadingConstraint = border<<>(container,horizontalMargin)
@@ -147,8 +217,7 @@ public class NiceActionSheet: UIViewController {
         return border
     }
     
-    var buttonSelectedBackgroundColor = UIColor.blackColor()
-    var buttonSelectedImageColor:UIImage!
+    var buttonSelectedImageColor:UIImage?
     
     private func getImageWithColor(color: UIColor, size: CGSize) -> UIImage {
         var rect = CGRectMake(0, 0, size.width, size.height)

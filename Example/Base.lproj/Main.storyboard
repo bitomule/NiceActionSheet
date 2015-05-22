@@ -25,13 +25,24 @@
                                     <action selector="showActionSheet:" destination="BYZ-38-t0r" eventType="touchUpInside" id="g4V-gu-qhA"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NJ8-LQ-S0T">
+                                <rect key="frame" x="295" y="150" width="10" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="centerX" secondItem="NJ8-LQ-S0T" secondAttribute="centerX" id="Ivi-mV-gkz"/>
+                            <constraint firstAttribute="centerY" secondItem="NJ8-LQ-S0T" secondAttribute="centerY" constant="140" id="aOT-ip-3Nc"/>
                             <constraint firstAttribute="centerY" secondItem="Zlg-u2-aVf" secondAttribute="centerY" id="i2H-I2-5AI"/>
                             <constraint firstAttribute="centerX" secondItem="Zlg-u2-aVf" secondAttribute="centerX" id="wXy-g8-o7G"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="indexLabel" destination="NJ8-LQ-S0T" id="e5K-Ya-t6p"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
