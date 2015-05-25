@@ -26,11 +26,9 @@ public struct NiceActionSheetButton {
 
 public class NiceActionSheet: UIViewController {
     
-    private var parentVC:UIViewController!
     
-    public class func show(presenter:UIViewController,backgroundColor:UIColor,backgroundAlpha:CGFloat = 1,sheetBackgroundColor:UIColor,title:String,titleFont:UIFont = UIFont.systemFontOfSize(14),titleColor:UIColor = UIColor.blackColor(),buttons:[NiceActionSheetButton],buttonSelectedColor:UIColor?=nil,buttonsFont:UIFont=UIFont.systemFontOfSize(14),buttonSelectedIndex:Int?=nil,buttonsHandler: (index:Int) -> Void)->NiceActionSheet{
+    public class func show(backgroundColor:UIColor,backgroundAlpha:CGFloat = 1,sheetBackgroundColor:UIColor,title:String,titleFont:UIFont = UIFont.systemFontOfSize(14),titleColor:UIColor = UIColor.blackColor(),buttons:[NiceActionSheetButton],buttonSelectedColor:UIColor?=nil,buttonsFont:UIFont=UIFont.systemFontOfSize(14),buttonSelectedIndex:Int?=nil,buttonsHandler: (index:Int) -> Void)->NiceActionSheet{
         let vc = NiceActionSheet()
-        vc.parentVC = presenter
         vc.actionTitle = title
         vc.titleFont = titleFont
         vc.titleColor = titleColor
@@ -49,13 +47,16 @@ public class NiceActionSheet: UIViewController {
     private var inTime = 0.5
     private var outTime = 0.3
     
+    private let rootViewController = UIApplication.sharedApplication().keyWindow!.rootViewController!
+    
     private var displayed = false
     
     private func show(){
         displayed = true
-        self.willMoveToParentViewController(parentVC)
-        parentVC.view.addSubview(self.view)
-        self.didMoveToParentViewController(parentVC)
+        
+        self.willMoveToParentViewController(rootViewController)
+        rootViewController.view.addSubview(self.view)
+        self.didMoveToParentViewController(rootViewController)
         
         self.view.backgroundColor = self.backgroundViewColor.colorWithAlphaComponent(0)
         UIView.animateWithDuration(self.inTime, animations: { () -> Void in
