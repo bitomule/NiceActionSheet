@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController {
 
     var selectedIndex = 0
+    var vc:NiceActionSheet?
     
     @IBOutlet weak var indexLabel: UILabel!
     
@@ -20,7 +21,7 @@ class ViewController: UIViewController {
         let button3 = NiceActionSheetButton(title: "Button3")
         let button4 = NiceActionSheetButton(title: "Button 4")
         
-        NiceActionSheet.show(self, backgroundColor: UIColor.whiteColor(), backgroundAlpha: 0.6, sheetBackgroundColor: UIColor.grayColor(), title: "Title here", titleFont: UIFont.boldSystemFontOfSize(15), titleColor: UIColor.whiteColor(), buttons: [button1,button2,button3,button4], buttonSelectedColor: UIColor.blueColor(), buttonsFont: UIFont.boldSystemFontOfSize(15), buttonSelectedIndex: self.selectedIndex) { (index) -> Void in
+        vc = NiceActionSheet.show(self, backgroundColor: UIColor.whiteColor(), backgroundAlpha: 0.6, sheetBackgroundColor: UIColor.grayColor(), title: "Title here", titleFont: UIFont.boldSystemFontOfSize(15), titleColor: UIColor.whiteColor(), buttons: [button1,button2,button3,button4], buttonSelectedColor: UIColor.blueColor(), buttonsFont: UIFont.boldSystemFontOfSize(15), buttonSelectedIndex: self.selectedIndex) { (index) -> Void in
             self.selectedIndex = index
             self.indexLabel.text = String(index)
         }

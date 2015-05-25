@@ -15,7 +15,6 @@
 		41FE26401B0F147500B53106 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 41FE263A1B0F147500B53106 /* Info.plist */; };
 		41FE26411B0F147500B53106 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FE263B1B0F147500B53106 /* ViewController.swift */; };
 		41FE26441B0F15C000B53106 /* NiceActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FE26431B0F15C000B53106 /* NiceActionSheet.swift */; };
-		41FE26461B0F1B4B00B53106 /* TransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FE26451B0F1B4B00B53106 /* TransitionManager.swift */; };
 		E806482BF6F3B801C0D5F21E /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B45B77C5845574FED3C57E0 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -41,7 +40,6 @@
 		41FE263A1B0F147500B53106 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		41FE263B1B0F147500B53106 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		41FE26431B0F15C000B53106 /* NiceActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NiceActionSheet.swift; sourceTree = "<group>"; };
-		41FE26451B0F1B4B00B53106 /* TransitionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionManager.swift; sourceTree = "<group>"; };
 		5B45B77C5845574FED3C57E0 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D2AC21EBD0EAD6FA61A26F9 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7ABD78CCDBDA9C52EAE1A48E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 			isa = PBXGroup;
 			children = (
 				41FE26431B0F15C000B53106 /* NiceActionSheet.swift */,
-				41FE26451B0F1B4B00B53106 /* TransitionManager.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -295,7 +292,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41FE26461B0F1B4B00B53106 /* TransitionManager.swift in Sources */,
 				41FE26441B0F15C000B53106 /* NiceActionSheet.swift in Sources */,
 				41FE26411B0F147500B53106 /* ViewController.swift in Sources */,
 				41FE263C1B0F147500B53106 /* AppDelegate.swift in Sources */,

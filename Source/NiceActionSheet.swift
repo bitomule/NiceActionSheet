@@ -26,11 +26,11 @@ public struct NiceActionSheetButton {
 
 public class NiceActionSheet: UIViewController {
     
-    public class func show(presenter:UIViewController,backgroundColor:UIColor,backgroundAlpha:CGFloat = 1,sheetBackgroundColor:UIColor,title:String,titleFont:UIFont = UIFont.systemFontOfSize(14),titleColor:UIColor = UIColor.blackColor(),buttons:[NiceActionSheetButton],buttonSelectedColor:UIColor?=nil,buttonsFont:UIFont=UIFont.systemFontOfSize(14),buttonSelectedIndex:Int?=nil,buttonsHandler: (index:Int) -> Void){
+    private var parentVC:UIViewController!
+    
+    public class func show(presenter:UIViewController,backgroundColor:UIColor,backgroundAlpha:CGFloat = 1,sheetBackgroundColor:UIColor,title:String,titleFont:UIFont = UIFont.systemFontOfSize(14),titleColor:UIColor = UIColor.blackColor(),buttons:[NiceActionSheetButton],buttonSelectedColor:UIColor?=nil,buttonsFont:UIFont=UIFont.systemFontOfSize(14),buttonSelectedIndex:Int?=nil,buttonsHandler: (index:Int) -> Void)->NiceActionSheet{
         let vc = NiceActionSheet()
-        vc.modalPresentationStyle = UIModalPresentationStyle.Custom
-        vc.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
-        vc.transitioningDelegate = vc.manager
+        vc.parentVC = presenter
         vc.actionTitle = title
         vc.titleFont = titleFont
         vc.titleColor = titleColor
@@ -42,7 +42,55 @@ public class NiceActionSheet: UIViewController {
         vc.backgroundViewAlpha = backgroundAlpha
         vc.backgroundViewColor = backgroundColor
         vc.actionSheetBackgroundColor = sheetBackgroundColor
-        presenter.presentViewController(vc, animated: true, completion: nil)
+        vc.show()
+        return vc
+    }
+    
+    private var inTime = 0.5
+    private var outTime = 0.3
+    
+    private var displayed = false
+    
+    private func show(){
+        displayed = true
+        self.willMoveToParentViewController(parentVC)
+        parentVC.view.addSubview(self.view)
+        self.didMoveToParentViewController(parentVC)
+        
+        self.view.backgroundColor = self.backgroundViewColor.colorWithAlphaComponent(0)
+        UIView.animateWithDuration(self.inTime, animations: { () -> Void in
+            self.view.backgroundColor = self.backgroundViewColor.colorWithAlphaComponent(self.backgroundViewAlpha)
+        })
+        
+        let animation = CABasicAnimation(keyPath: "position.y")
+        animation.duration = self.inTime
+        animation.fromValue = UIScreen.mainScreen().bounds.height + self.viewContainer.bounds.height * 0.5
+        animation.toValue = UIScreen.mainScreen().bounds.height - self.viewContainer.bounds.height * 0.5
+        animation.fillMode = kCAFillModeForwards
+        animation.removedOnCompletion = false
+        animation.timingFunction = CAMediaTimingFunction(controlPoints: 0.19, 1, 0.22, 1)
+        self.viewContainer.layer.addAnimation(animation, forKey: "show")
+    }
+    
+    private func hide(){
+        displayed = false
+        self.viewContainer.layer.removeAllAnimations()
+        self.view.backgroundColor = self.backgroundViewColor.colorWithAlphaComponent(self.backgroundViewAlpha)
+        
+        UIView.animateWithDuration(self.outTime, animations: { () -> Void in
+            self.view.backgroundColor = self.backgroundViewColor.colorWithAlphaComponent(0)
+        }) { (completed) -> Void in
+            self.view.removeFromSuperview()
+        }
+        
+        let animation = CABasicAnimation(keyPath: "position.y")
+        animation.duration = outTime
+        animation.fromValue = UIScreen.mainScreen().bounds.height - self.viewContainer.bounds.height * 0.5
+        animation.toValue = UIScreen.mainScreen().bounds.height + self.viewContainer.bounds.height * 0.5
+        animation.fillMode = kCAFillModeForwards
+        animation.removedOnCompletion = false
+        animation.timingFunction = CAMediaTimingFunction(controlPoints: 0.55, 0.055, 0.675, 0.19)
+        self.viewContainer.layer.addAnimation(animation, forKey: "hide")
     }
     
     var horizontalMargin:CGFloat = 37
@@ -68,7 +116,6 @@ public class NiceActionSheet: UIViewController {
     var actionSheetBackgroundColor = UIColor.grayColor()
     var buttonsFont:UIFont = UIFont.systemFontOfSize(15)
     
-    let manager = TransitionManager()
     var viewContainer: UIView!
 
     override public func viewDidLoad() {
@@ -90,7 +137,7 @@ public class NiceActionSheet: UIViewController {
     }
     
     func viewTapped(){
-        self.dismissViewControllerAnimated(true, completion: nil)
+        hide()
     }
     
     func ignoreTapInContainer(){
@@ -197,7 +244,7 @@ public class NiceActionSheet: UIViewController {
     func buttonPressed(button:UIButton){
         resetButtons()
         button.selected = true
-        self.dismissViewControllerAnimated(true, completion: nil)
+        hide()
         buttonsHandler(index:button.tag)
     }
     
