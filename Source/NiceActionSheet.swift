@@ -27,7 +27,7 @@ public struct NiceActionSheetButton {
 public class NiceActionSheet: UIViewController {
     
     
-    public class func show(backgroundColor:UIColor,backgroundAlpha:CGFloat = 1,sheetBackgroundColor:UIColor,title:String,titleFont:UIFont = UIFont.systemFontOfSize(14),titleColor:UIColor = UIColor.blackColor(),buttons:[NiceActionSheetButton],buttonSelectedColor:UIColor?=nil,buttonsFont:UIFont=UIFont.systemFontOfSize(14),buttonSelectedIndex:Int?=nil,buttonsHandler: (index:Int) -> Void)->NiceActionSheet{
+    public class func show(backgroundColor:UIColor,backgroundAlpha:CGFloat = 1,sheetBackgroundColor:UIColor,title:String,titleFont:UIFont = UIFont.systemFontOfSize(14),titleColor:UIColor = UIColor.blackColor(),buttons:[NiceActionSheetButton],buttonSelectedColor:UIColor?=nil,buttonsFont:UIFont=UIFont.systemFontOfSize(14),cancelButtonColor:UIColor?=nil,cancelButtonTitleColor:UIColor?=nil,cancelButtonFont:UIFont?=nil,buttonSelectedIndex:Int?=nil,buttonsHandler: (index:Int) -> Void)->NiceActionSheet{
         let vc = NiceActionSheet()
         vc.actionTitle = title
         vc.titleFont = titleFont
@@ -40,6 +40,15 @@ public class NiceActionSheet: UIViewController {
         vc.backgroundViewAlpha = backgroundAlpha
         vc.backgroundViewColor = backgroundColor
         vc.actionSheetBackgroundColor = sheetBackgroundColor
+        if let cancelButtonFont = cancelButtonFont{
+            vc.cancelButtonFont = cancelButtonFont
+        }
+        if let cancelButtonTitleColor = cancelButtonTitleColor{
+            vc.cancelTitleColor = cancelButtonTitleColor
+        }
+        if let cancelButtonColor = cancelButtonColor{
+            vc.cancelButtonColor = cancelButtonColor
+        }
         vc.show()
         return vc
     }
@@ -101,11 +110,14 @@ public class NiceActionSheet: UIViewController {
     var borderToTopButtonMargin:CGFloat = 0
     var titleToTopMargin:CGFloat = 19
     var buttonHeight:CGFloat = 43
+    var cancelButtonTopSpace:CGFloat = 10
     
     var actionTitle:String = ""
     var buttons:[NiceActionSheetButton]!
     var buttonSelectedIndex:Int?
     var buttonsHandler: ((index:Int) -> Void)!
+    
+    var cancelTitle:String = "Cancel"
     
     //Styles
     
@@ -116,6 +128,10 @@ public class NiceActionSheet: UIViewController {
     var backgroundViewColor = UIColor.redColor()
     var actionSheetBackgroundColor = UIColor.grayColor()
     var buttonsFont:UIFont = UIFont.systemFontOfSize(15)
+    var cancelButtonFont = UIFont.systemFontOfSize(15)
+    var cancelTitleColor = UIColor.blackColor()
+    var cancelButtonColor = UIColor.whiteColor()
+    var cancelButtonImageColor:UIImage!
     
     var viewContainer: UIView!
 
@@ -125,6 +141,7 @@ public class NiceActionSheet: UIViewController {
         if let buttonSelectedColor = buttonSelectedColor{
             buttonSelectedImageColor = getImageWithColor(buttonSelectedColor,size:CGSize(width: 1, height: 1))
         }
+        cancelButtonImageColor = getImageWithColor(cancelButtonColor,size:CGSize(width: 1, height: 1))
         createViewContainer()
         addGestureRecognizers()
     }
@@ -191,8 +208,7 @@ public class NiceActionSheet: UIViewController {
                 lastView = createBorder(container, previousButton: button)
             }
         }
-        let bottomConstraint = container*<^>(lastView,bottomVerticalMargin)
-        container.addConstraint(bottomConstraint)
+        createCancelButton(container,lastButton: lastView)
     }
     
     private var renderedButtons:[UIButton] = [UIButton]()
@@ -236,6 +252,28 @@ public class NiceActionSheet: UIViewController {
         return button
     }
     
+    private func createCancelButton(container:UIView,lastButton:UIView){
+        let button = UIButton()
+        button.setBackgroundImage(cancelButtonImageColor, forState: UIControlState.Normal)
+        button.setTitle(cancelTitle, forState: .Normal)
+        button.titleLabel?.font = cancelButtonFont
+        button.setTitleColor(cancelTitleColor, forState: .Normal)
+        button.setTranslatesAutoresizingMaskIntoConstraints(false)
+        button.addTarget(self, action: "cancelPressed", forControlEvents: UIControlEvents.TouchUpInside)
+        container.addSubview(button)
+        
+        let topSpace = button*><>(lastButton,cancelButtonTopSpace)
+        let leadingConstraint = button<<>(container,0)
+        let trailingConstraint = container<>>(button,0)
+        let heightConstraint = NSLayoutConstraint(item: button, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: buttonHeight)
+        button.addConstraint(heightConstraint)
+        container.addConstraints([trailingConstraint,leadingConstraint,topSpace])
+
+        
+        let bottomConstraint = container*<^>(button,0)
+        container.addConstraint(bottomConstraint)
+    }
+    
     private func resetButtons(){
         for button in renderedButtons{
             button.selected = false
@@ -247,6 +285,10 @@ public class NiceActionSheet: UIViewController {
         button.selected = true
         hide()
         buttonsHandler(index:button.tag)
+    }
+    
+    func cancelPressed(){
+        hide()
     }
     
     private func createBorder(container:UIView,previousButton:UIView)->UIView{
