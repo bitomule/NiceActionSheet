@@ -21,10 +21,12 @@ class ViewController: UIViewController {
         let button3 = NiceActionSheetButton(title: "Button3")
         let button4 = NiceActionSheetButton(title: "Button 4")
         
-        vc = NiceActionSheet.show(UIColor.whiteColor(), backgroundAlpha: 0.6, sheetBackgroundColor: UIColor.grayColor(), title: "Title here", titleFont: UIFont.boldSystemFontOfSize(15), titleColor: UIColor.whiteColor(), buttons: [button1,button2,button3,button4], buttonSelectedColor: UIColor.blueColor(), buttonsFont: UIFont.boldSystemFontOfSize(15), buttonSelectedIndex: self.selectedIndex) { (index) -> Void in
+        vc = NiceActionSheet.show(UIColor.whiteColor(), backgroundAlpha: 0.6, sheetBackgroundColor: UIColor.grayColor(), title: "Title here", titleFont: UIFont.boldSystemFontOfSize(15), titleColor: UIColor.whiteColor(), buttons: [button1,button2,button3,button4], buttonSelectedColor: UIColor.blueColor(), buttonsFont: UIFont.boldSystemFontOfSize(15), cancelButtonColor: UIColor.whiteColor(), cancelButtonTitleColor: UIColor.blackColor(), cancelButtonFont: UIFont.boldSystemFontOfSize(12), cancelButtonTitle: "Cancel",buttonSelectedIndex: self.selectedIndex) { (index) -> Void in
             self.selectedIndex = index
             self.indexLabel.text = String(index)
         }
+
+        
     }
     
     override func viewDidLoad() {

@@ -27,7 +27,7 @@ public struct NiceActionSheetButton {
 public class NiceActionSheet: UIViewController {
     
     
-    public class func show(backgroundColor:UIColor,backgroundAlpha:CGFloat = 1,sheetBackgroundColor:UIColor,title:String,titleFont:UIFont = UIFont.systemFontOfSize(14),titleColor:UIColor = UIColor.blackColor(),buttons:[NiceActionSheetButton],buttonSelectedColor:UIColor?=nil,buttonsFont:UIFont=UIFont.systemFontOfSize(14),cancelButtonColor:UIColor?=nil,cancelButtonTitleColor:UIColor?=nil,cancelButtonFont:UIFont?=nil,buttonSelectedIndex:Int?=nil,buttonsHandler: (index:Int) -> Void)->NiceActionSheet{
+    public class func show(backgroundColor:UIColor,backgroundAlpha:CGFloat = 1,sheetBackgroundColor:UIColor,title:String,titleFont:UIFont = UIFont.systemFontOfSize(14),titleColor:UIColor = UIColor.blackColor(),buttons:[NiceActionSheetButton],buttonSelectedColor:UIColor?=nil,buttonsFont:UIFont=UIFont.systemFontOfSize(14),buttonSelectedIndex:Int?=nil,cancelButtonColor:UIColor?=nil,cancelButtonTitleColor:UIColor?=nil,cancelButtonFont:UIFont?=nil,cancelButtonTitle:String = "",buttonsHandler: (index:Int) -> Void)->NiceActionSheet{
         let vc = NiceActionSheet()
         vc.actionTitle = title
         vc.titleFont = titleFont
@@ -49,6 +49,7 @@ public class NiceActionSheet: UIViewController {
         if let cancelButtonColor = cancelButtonColor{
             vc.cancelButtonColor = cancelButtonColor
         }
+        vc.cancelTitle = cancelButtonTitle
         vc.show()
         return vc
     }
