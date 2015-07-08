@@ -64,6 +64,10 @@ public class NiceActionSheet: UIViewController {
     private func show(){
         displayed = true
         
+        if let topViewController = rootViewController.presentedViewController{
+            rootViewController = topViewController
+        }
+        
         self.willMoveToParentViewController(rootViewController)
         rootViewController.view.addSubview(self.view)
         self.didMoveToParentViewController(rootViewController)
