@@ -57,7 +57,7 @@ public class NiceActionSheet: UIViewController {
     private var inTime = 0.5
     private var outTime = 0.3
     
-    private let rootViewController = UIApplication.sharedApplication().keyWindow!.rootViewController!
+    private var rootViewController = UIApplication.sharedApplication().keyWindow!.rootViewController!
     
     private var displayed = false
     
