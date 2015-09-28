@@ -170,7 +170,7 @@ public class NiceActionSheet: UIViewController {
     private func createViewContainer(){
         viewContainer = UIView()
         viewContainer.backgroundColor = actionSheetBackgroundColor
-        viewContainer.setTranslatesAutoresizingMaskIntoConstraints(false)
+        viewContainer.translatesAutoresizingMaskIntoConstraints = false
         viewContainer.clipsToBounds = true
         let trailingConstraint = self.view<>>(viewContainer,0)
         let leadingConstraint = self.view<<>(viewContainer,0)
@@ -187,7 +187,7 @@ public class NiceActionSheet: UIViewController {
     
     private func createTitle(container:UIView)->UILabel{
         let label = UILabel()
-        label.setTranslatesAutoresizingMaskIntoConstraints(false)
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.text = actionTitle
         label.textColor = titleColor
         label.font = titleFont
@@ -224,7 +224,7 @@ public class NiceActionSheet: UIViewController {
         button.setTitle(buttonInfo.title, forState: .Normal)
         button.titleLabel?.font = buttonsFont
         button.setTitleColor(buttonInfo.titleColor, forState: .Normal)
-        button.setTranslatesAutoresizingMaskIntoConstraints(false)
+        button.translatesAutoresizingMaskIntoConstraints = false
         if let buttonSelectedIndex = buttonSelectedIndex where buttonSelectedIndex == index{
             button.selected = true
         }else{
@@ -238,7 +238,6 @@ public class NiceActionSheet: UIViewController {
         button.tag = index
         button.addTarget(self, action: "buttonPressed:", forControlEvents: UIControlEvents.TouchUpInside)
         container.addSubview(button)
-        let topSpace:NSLayoutConstraint
         if(index == 0)
         {
             //Is first button
@@ -263,7 +262,7 @@ public class NiceActionSheet: UIViewController {
         button.setTitle(cancelTitle, forState: .Normal)
         button.titleLabel?.font = cancelButtonFont
         button.setTitleColor(cancelTitleColor, forState: .Normal)
-        button.setTranslatesAutoresizingMaskIntoConstraints(false)
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: "cancelPressed", forControlEvents: UIControlEvents.TouchUpInside)
         container.addSubview(button)
         
@@ -298,7 +297,7 @@ public class NiceActionSheet: UIViewController {
     
     private func createBorder(container:UIView,previousButton:UIView)->UIView{
         let border = UIView()
-        border.setTranslatesAutoresizingMaskIntoConstraints(false)
+        border.translatesAutoresizingMaskIntoConstraints = false
         if let buttonSelectedColor = buttonSelectedColor{
             border.backgroundColor = buttonSelectedColor
         }else{
@@ -316,11 +315,11 @@ public class NiceActionSheet: UIViewController {
     var buttonSelectedImageColor:UIImage?
     
     private func getImageWithColor(color: UIColor, size: CGSize) -> UIImage {
-        var rect = CGRectMake(0, 0, size.width, size.height)
+        let rect = CGRectMake(0, 0, size.width, size.height)
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         color.setFill()
         UIRectFill(rect)
-        var image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return image
     }

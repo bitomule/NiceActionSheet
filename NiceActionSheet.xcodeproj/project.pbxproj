@@ -12,7 +12,6 @@
 		41FE263D1B0F147500B53106 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41FE26351B0F147500B53106 /* LaunchScreen.xib */; };
 		41FE263E1B0F147500B53106 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 41FE26371B0F147500B53106 /* Main.storyboard */; };
 		41FE263F1B0F147500B53106 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41FE26391B0F147500B53106 /* Images.xcassets */; };
-		41FE26401B0F147500B53106 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 41FE263A1B0F147500B53106 /* Info.plist */; };
 		41FE26411B0F147500B53106 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FE263B1B0F147500B53106 /* ViewController.swift */; };
 		41FE26441B0F15C000B53106 /* NiceActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41FE26431B0F15C000B53106 /* NiceActionSheet.swift */; };
 		E806482BF6F3B801C0D5F21E /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B45B77C5845574FED3C57E0 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -187,7 +186,9 @@
 		41FE26061B0F145A00B53106 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "David Collado Sela";
 				TargetAttributes = {
 					41FE260D1B0F145A00B53106 = {
@@ -223,7 +224,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				41FE26401B0F147500B53106 /* Info.plist in Resources */,
 				41FE263F1B0F147500B53106 /* Images.xcassets in Resources */,
 				41FE263D1B0F147500B53106 /* LaunchScreen.xib in Resources */,
 				41FE263E1B0F147500B53106 /* Main.storyboard in Resources */,
@@ -357,6 +357,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -426,6 +427,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bitomule.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -437,6 +439,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bitomule.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -455,6 +458,7 @@
 				);
 				INFOPLIST_FILE = NiceActionSheetTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bitomule.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NiceActionSheet.app/NiceActionSheet";
 			};
@@ -470,6 +474,7 @@
 				);
 				INFOPLIST_FILE = NiceActionSheetTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bitomule.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NiceActionSheet.app/NiceActionSheet";
 			};
